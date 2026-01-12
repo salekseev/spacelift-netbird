@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# Helper script to control netbird whilst playing nicely with Spacelift
+#
+
+[[ "$TRACE" ]] && set -o xtrace
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o noclobber
+
+usage() {
+  echo "Usage: ${0} <up|down>"
+}
+
+if [[ -z ${TF_VAR_spacelift_workspace_root:-} ]]; then
+  echo "spacebird: TF_VAR_spacelift_workspace_root not set but expected"
+  usage
+  exit 1
+fi
+
+# Check for authentication credentials - either OAuth or direct auth key
+if [[ -z ${NB_SETUP_KEY:-} ]]; then
+  echo "spacebird: NB_SETUP_KEY must be set"
+  usage
+  exit 1
+fi
+
+if [[ -z ${1:-} ]]; then
+  echo "spacebird: Action not set but expected"
+  usage
+  exit 1
+fi
+
+ACTION="${1:-}"
+readonly ACTION
+
+NB_EXTRA_DNS_LABEL="spacelift-$(hostname)"
+readonly NB_EXTRA_DNS_LABEL
+
+NB_USE_NETSTACK_MODE=true
+readonly NB_USE_NETSTACK_MODE
+
+NB_SOCKS5_LISTENER_PORT=1080
+readonly NB_SOCKS5_LISTENER_PORT
+
+if [[ "${ACTION}" = "up" ]]; then
+  echo "spacebird: Bringing netbird up"
+  # shellcheck disable=SC2086
+  netbird up --log-file=/home/spacelift/netbird.log
+  echo "spacebird: Netbird up"
+elif [[ "${ACTION}" = "down" ]]; then
+  echo "spacebird: Taking netbird down"
+  # Stopping netbird brings the ephemeral node down cleanly
+  pkill netbird
+  echo "spacebird: Netbird down"
+else
+  echo "spacebird: Unknown action ${ACTION}"
+  usage
+  exit 1
+fi

@@ -1,0 +1,21 @@
+# Multi-stage build to reduce final image size
+# Stage 1: Builder - compile get-authkey utility
+FROM golang:alpine AS builder
+
+# Stage 2: Runtime - minimal image with only required components
+# hadolint ignore=DL3007
+FROM ghcr.io/spacelift-io/runner-ansible:latest AS runtime
+
+USER root
+
+# Install only netbird (no Go toolchain needed in runtime)
+# hadolint ignore=DL3018
+RUN apk add --no-cache netbird bash netcat-openbsd
+
+# Copy Netbird integration scripts
+COPY bin/ /usr/local/bin/
+
+# Let netbird use default socket location
+RUN mkdir -p /home/spacelift/.local/share/netbird /var/run/netbird && chown spacelift:spacelift /home/spacelift/.local/share/netbird /var/run/netbird
+
+USER spacelift
