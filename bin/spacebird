@@ -35,6 +35,15 @@ fi
 NB_CONFIG="${TF_VAR_spacelift_workspace_root}/netbird.json"
 readonly NB_CONFIG
 
+NB_DAEMON_ADDR="unix://${TF_VAR_spacelift_workspace_root}/netbird.sock"
+readonly ND_DAEMON_ADDR
+
+NB_LOG_FILE="${TF_VAR_spacelift_workspace_root}/netbird.log"
+readonly NB_LOG_FILE
+
+NB_LOG_LEVEL="debug"
+readonly NB_LOG_LEVEL
+
 ACTION="${1:-}"
 readonly ACTION
 
@@ -58,7 +67,7 @@ readonly NB_EXTRA_ARGS
 if [[ "${ACTION}" = "up" ]]; then
   echo "spacebird: Bringing netbird up"
   # shellcheck disable=SC2086
-  nohup netbird up ${NB_EXTRA_ARGS} --log-file=/home/spacelift/netbird.log
+  nohup netbird up ${NB_EXTRA_ARGS}
   echo "spacebird: Netbird up"
 elif [[ "${ACTION}" = "down" ]]; then
   echo "spacebird: Taking netbird down"
