@@ -43,14 +43,11 @@ readonly NB_DAEMON_ADDR
 export NB_LOG_FILE="${TF_VAR_spacelift_workspace_root}/netbird.log"
 readonly NB_LOG_FILE
 
-export NB_LOG_LEVEL="debug"
-readonly NB_LOG_LEVEL
-
 ACTION="${1:-}"
 readonly ACTION
 
-export NB_EXTRA_DNS_LABEL="spacelift-$(hostname)"
-readonly NB_EXTRA_DNS_LABEL
+export NB_EXTRA_DNS_LABELS="spacelift-$(hostname)"
+readonly NB_EXTRA_DNS_LABELS
 
 export NB_USE_NETSTACK_MODE=true
 readonly NB_USE_NETSTACK_MODE
@@ -62,7 +59,7 @@ export NB_FOREGROUND_MODE=true
 readonly NB_FOREGROUND_MODE
 
 if [[ -z ${NB_EXTRA_ARGS:-} ]]; then
-  NB_EXTRA_ARGS="--enable-rosenpass --rosenpass-permissive"
+  NB_EXTRA_ARGS="--log-level info"
 fi
 readonly NB_EXTRA_ARGS
 
