@@ -55,9 +55,6 @@ readonly NB_USE_NETSTACK_MODE
 export NB_SOCKS5_LISTENER_PORT=1080
 readonly NB_SOCKS5_LISTENER_PORT
 
-export NB_FOREGROUND_MODE=true
-readonly NB_FOREGROUND_MODE
-
 if [[ -z ${NB_EXTRA_ARGS:-} ]]; then
   NB_EXTRA_ARGS="--log-level info"
 fi
@@ -66,7 +63,7 @@ readonly NB_EXTRA_ARGS
 if [[ "${ACTION}" = "up" ]]; then
   echo "spacebird: Bringing netbird up"
   # shellcheck disable=SC2086
-  nohup netbird up ${NB_EXTRA_ARGS}
+  netbird up ${NB_EXTRA_ARGS}
   echo "spacebird: Netbird up"
 elif [[ "${ACTION}" = "down" ]]; then
   echo "spacebird: Taking netbird down"
