@@ -44,10 +44,15 @@ readonly NB_USE_NETSTACK_MODE
 NB_SOCKS5_LISTENER_PORT=1080
 readonly NB_SOCKS5_LISTENER_PORT
 
+if [[ -z ${NB_EXTRA_ARGS:-} ]]; then
+  NB_EXTRA_ARGS="--enable-rosenpass --rosenpass-permissive"
+fi
+readonly NB_EXTRA_ARGS
+
 if [[ "${ACTION}" = "up" ]]; then
   echo "spacebird: Bringing netbird up"
   # shellcheck disable=SC2086
-  netbird up --log-file=/home/spacelift/netbird.log
+  netbird up ${NB_EXTRA_ARGS} --log-file=/home/spacelift/netbird.log
   echo "spacebird: Netbird up"
 elif [[ "${ACTION}" = "down" ]]; then
   echo "spacebird: Taking netbird down"
