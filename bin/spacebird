@@ -26,37 +26,39 @@ if [[ -z ${NB_SETUP_KEY:-} ]]; then
   exit 1
 fi
 
+export NB_SETUP_KEY
+
 if [[ -z ${1:-} ]]; then
   echo "spacebird: Action not set but expected"
   usage
   exit 1
 fi
 
-NB_CONFIG="${TF_VAR_spacelift_workspace_root}/netbird.json"
+export NB_CONFIG="${TF_VAR_spacelift_workspace_root}/netbird.json"
 readonly NB_CONFIG
 
-NB_DAEMON_ADDR="unix://${TF_VAR_spacelift_workspace_root}/netbird.sock"
-readonly ND_DAEMON_ADDR
+export NB_DAEMON_ADDR="unix://${TF_VAR_spacelift_workspace_root}/netbird.sock"
+readonly NB_DAEMON_ADDR
 
-NB_LOG_FILE="${TF_VAR_spacelift_workspace_root}/netbird.log"
+export NB_LOG_FILE="${TF_VAR_spacelift_workspace_root}/netbird.log"
 readonly NB_LOG_FILE
 
-NB_LOG_LEVEL="debug"
+export NB_LOG_LEVEL="debug"
 readonly NB_LOG_LEVEL
 
 ACTION="${1:-}"
 readonly ACTION
 
-NB_EXTRA_DNS_LABEL="spacelift-$(hostname)"
+export NB_EXTRA_DNS_LABEL="spacelift-$(hostname)"
 readonly NB_EXTRA_DNS_LABEL
 
-NB_USE_NETSTACK_MODE=true
+export NB_USE_NETSTACK_MODE=true
 readonly NB_USE_NETSTACK_MODE
 
-NB_SOCKS5_LISTENER_PORT=1080
+export NB_SOCKS5_LISTENER_PORT=1080
 readonly NB_SOCKS5_LISTENER_PORT
 
-NB_FOREGROUND_MODE=true
+export NB_FOREGROUND_MODE=true
 readonly NB_FOREGROUND_MODE
 
 if [[ -z ${NB_EXTRA_ARGS:-} ]]; then
