@@ -63,7 +63,9 @@ readonly NB_EXTRA_ARGS
 if [[ "${ACTION}" = "up" ]]; then
   echo "spacebird: Bringing netbird up"
   # shellcheck disable=SC2086
-  netbird up ${NB_EXTRA_ARGS}
+  nohup netbird up \
+    --foreground-mode \
+    ${NB_EXTRA_ARGS} 2> /home/spacelift/netbird.log &
   echo "spacebird: Netbird up"
 elif [[ "${ACTION}" = "down" ]]; then
   echo "spacebird: Taking netbird down"
